@@ -894,7 +894,12 @@ TextStyle defaultStyleBuilder(Set<Attribution> attributions) {
   TextStyle newStyle = const TextStyle();
 
   for (final attribution in attributions) {
-    if (attribution == boldAttribution) {
+    if (attribution is HashtagAttribution) {
+      return TextStyle(
+        fontWeight: FontWeight.bold,
+        color: Colors.blueAccent,
+      );
+    } else if (attribution == boldAttribution) {
       newStyle = newStyle.copyWith(
         fontWeight: FontWeight.bold,
       );

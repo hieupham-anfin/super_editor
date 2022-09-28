@@ -74,3 +74,24 @@ class LinkAttribution implements Attribution {
     return '[LinkAttribution]: $url';
   }
 }
+
+class HashtagAttribution implements Attribution {
+  HashtagAttribution({required this.hashtag});
+
+  @override
+  String get id => 'link';
+
+  final String hashtag;
+
+  @override
+  bool canMergeWith(Attribution other) {
+    return this == other;
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is HashtagAttribution &&
+          runtimeType == other.runtimeType &&
+          hashtag == other.hashtag;
+}

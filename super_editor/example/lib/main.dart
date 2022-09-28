@@ -91,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    _selectedMenuItem = _menu[0].items[0];
+    _selectedMenuItem = _menu[0].items[7];
   }
 
   void _toggleDrawer() {

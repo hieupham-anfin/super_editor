@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:super_editor/super_editor.dart';
+import 'package:super_editor_markdown/super_editor_markdown.dart';
 
 /// An empty document.
 ///
@@ -17,12 +20,23 @@ class EmptyDocumentDemo extends StatefulWidget {
 class _EmptyDocumentDemoState extends State<EmptyDocumentDemo> {
   late Document _doc;
   late DocumentEditor _docEditor;
+  late DocumentComposer _composer;
+  late CommonEditorOperations _ops;
+  late GlobalKey _layoutKey;
+
+  String _markdown = '';
 
   @override
   void initState() {
     super.initState();
     _doc = _createDocument1();
     _docEditor = DocumentEditor(document: _doc as MutableDocument);
+    _composer = DocumentComposer();
+    _ops = CommonEditorOperations(
+      editor: _docEditor,
+      composer: _composer,
+      documentLayoutResolver: () => _layoutKey.currentState as DocumentLayout,
+    );
   }
 
   @override
@@ -33,10 +47,67 @@ class _EmptyDocumentDemoState extends State<EmptyDocumentDemo> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: SuperEditor(
-        editor: _docEditor,
-        gestureMode: DocumentGestureMode.mouse,
-        inputSource: DocumentInputSource.keyboard,
+      child: Column(
+        children: [
+          Expanded(
+            child: SuperEditor(
+              editor: _docEditor,
+              composer: _composer,
+              gestureMode: Platform.isAndroid
+                  ? DocumentGestureMode.android
+                  : DocumentGestureMode.iOS,
+              inputSource: DocumentInputSource.ime,
+            ),
+          ),
+          const Divider(height: 1, thickness: 1),
+          Stack(
+            children: [
+              SuperIgnorePointer(
+                shouldIgnorePointer: false,
+                child: SingleColumnDocumentLayout(
+                  presenter: SingleColumnLayoutPresenter(
+                    document: deserializeMarkdownToDocument(_markdown),
+                    componentBuilders: defaultComponentBuilders,
+                    pipeline: [
+                      SingleColumnStylesheetStyler(stylesheet: defaultStylesheet),
+                    ],
+                  ),
+                  componentBuilders: defaultComponentBuilders,
+                ),
+              ),
+              Positioned(
+                bottom: 8,
+                right: 8,
+                child: TextButton(
+                  onPressed: () {
+                    _markdown = serializeDocumentToMarkdown(_doc);
+                    setState(() {});
+                  },
+                  child: Text('Parse'),
+                ),
+              ),
+            ],
+          ),
+          MultiListenableBuilder(
+            listenables: <Listenable>{
+              _doc,
+              _composer.selectionNotifier,
+            },
+            builder: (_) {
+              final selection = _composer.selection;
+
+              if (selection == null) {
+                return const SizedBox();
+              }
+
+              return KeyboardEditingToolbar(
+                document: _doc,
+                composer: _composer,
+                commonOps: _ops,
+              );
+            },
+          ),
+        ],
       ),
     );
   }

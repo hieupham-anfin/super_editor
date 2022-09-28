@@ -1,6 +1,10 @@
 import 'package:attributed_text/attributed_text.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/painting.dart';
+import 'package:super_editor/src/default_editor/attributions.dart';
 import 'package:super_editor/src/infrastructure/_logging.dart';
+import 'package:super_editor/src/regex/hashtag_regular_expression.dart';
 
 /// Creates the desired [TextStyle] given the [attributions] associated
 /// with a span of text.
@@ -29,13 +33,38 @@ extension ComputeTextSpan on AttributedText {
       return TextSpan(text: '', style: styleBuilder({}));
     }
 
+    spans.markers.removeWhere((m) => m.attribution is HashtagAttribution);
+
+    final matches = hashTagRegExp.allMatches(text);
+    for (final match in matches) {
+      spans.addAttribution(
+        newAttribution: HashtagAttribution(hashtag: match.group(0) ?? ''),
+        start: match.start,
+        end: match.end - 1,
+      );
+    }
+
     final collapsedSpans = spans.collapseSpans(contentLength: text.length);
-    final textSpans = collapsedSpans
-        .map((attributedSpan) => TextSpan(
-              text: text.substring(attributedSpan.start, attributedSpan.end + 1),
-              style: styleBuilder(attributedSpan.attributions),
-            ))
-        .toList();
+    final textSpans = collapsedSpans.map(
+      (attributedSpan) {
+        final att = attributedSpan.attributions
+            .firstWhereOrNull((att) => att is HashtagAttribution);
+
+        GestureRecognizer? recognizer;
+        if (att != null && att is HashtagAttribution) {
+          recognizer = TapGestureRecognizer()
+            ..onTap = () {
+              print(att.hashtag);
+            };
+        }
+
+        return TextSpan(
+          text: text.substring(attributedSpan.start, attributedSpan.end + 1),
+          style: styleBuilder(attributedSpan.attributions),
+          recognizer: recognizer,
+        );
+      },
+    ).toList();
 
     return textSpans.length == 1
         ? textSpans.first

@@ -15,6 +15,7 @@ import 'package:super_editor/src/core/styles.dart';
 import 'package:super_editor/src/infrastructure/_logging.dart';
 import 'package:super_editor/src/infrastructure/attributed_text_styles.dart';
 import 'package:super_editor/src/infrastructure/composable_text.dart';
+import 'package:super_editor/src/infrastructure/super_ignore_pointer.dart';
 import 'package:super_editor/src/infrastructure/keyboard.dart';
 import 'package:super_editor/src/infrastructure/raw_key_event_extensions.dart';
 import 'package:super_editor/src/infrastructure/strings.dart';
@@ -444,6 +445,17 @@ class TextComponentState extends State<TextComponent> with DocumentComponent imp
   @visibleForTesting
   ProseTextLayout get textLayout => _textKey.currentState!.textLayout;
 
+  late bool shouldIgnorePointer;
+
+  @override
+  void didChangeDependencies() {
+    shouldIgnorePointer = context
+            .dependOnInheritedWidgetOfExactType<SuperIgnorePointer>()
+            ?.shouldIgnorePointer ??
+        true;
+    super.didChangeDependencies();
+  }
+
   @override
   TextNodePosition? getPositionAtOffset(Offset localOffset) {
     // TODO: Change this implementation to use exact position instead of nearest position
@@ -789,6 +801,7 @@ class TextComponentState extends State<TextComponent> with DocumentComponent imp
     editorLayoutLog.finer('Building a TextComponent with key: ${widget.key}');
 
     return IgnorePointer(
+      ignoring: shouldIgnorePointer,
       child: SuperTextWithSelection.single(
         key: _textKey,
         richText: widget.text.computeTextSpan(_textStyleWithBlockType),

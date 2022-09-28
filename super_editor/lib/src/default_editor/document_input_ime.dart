@@ -1250,72 +1250,89 @@ class KeyboardEditingToolbar extends StatelessWidget {
                               IconButton(
                                 onPressed: selectedNode is TextNode ? _toggleUnderline : null,
                                 icon: const Icon(Icons.format_underline),
-                                color: _isUnderlineActive ? Theme.of(context).primaryColor : null,
-                              ),
-                              IconButton(
-                                onPressed: selectedNode is TextNode ? _toggleStrikethrough : null,
-                                icon: const Icon(Icons.strikethrough_s),
-                                color: _isStrikethroughActive ? Theme.of(context).primaryColor : null,
-                              ),
-                              IconButton(
-                                onPressed: isSingleNodeSelected &&
-                                        (selectedNode is TextNode &&
-                                            selectedNode.getMetadataValue('blockType') != header1Attribution)
-                                    ? _convertToHeader1
+                                color: _isUnderlineActive
+                                    ? Theme.of(context).primaryColor
                                     : null,
-                                icon: const Icon(Icons.title),
                               ),
+                              // IconButton(
+                              //   onPressed: selectedNode is TextNode ? _toggleStrikethrough : null,
+                              //   icon: const Icon(Icons.strikethrough_s),
+                              //   color: _isStrikethroughActive ? Theme.of(context).primaryColor : null,
+                              // ),
+                              // IconButton(
+                              //   onPressed: isSingleNodeSelected &&
+                              //           (selectedNode is TextNode &&
+                              //               selectedNode.getMetadataValue('blockType') != header1Attribution)
+                              //       ? _convertToHeader1
+                              //       : null,
+                              //   icon: const Icon(Icons.title),
+                              // ),
+                              // IconButton(
+                              //   onPressed: isSingleNodeSelected &&
+                              //           (selectedNode is TextNode &&
+                              //               selectedNode.getMetadataValue('blockType') != header2Attribution)
+                              //       ? _convertToHeader2
+                              //       : null,
+                              //   icon: const Icon(Icons.title),
+                              //   iconSize: 18,
+                              // ),
                               IconButton(
                                 onPressed: isSingleNodeSelected &&
+                                    ((selectedNode is ParagraphNode &&
+                                        selectedNode.hasMetadataValue(
+                                            'blockType')) ||
                                         (selectedNode is TextNode &&
-                                            selectedNode.getMetadataValue('blockType') != header2Attribution)
-                                    ? _convertToHeader2
-                                    : null,
-                                icon: const Icon(Icons.title),
-                                iconSize: 18,
-                              ),
-                              IconButton(
-                                onPressed: isSingleNodeSelected &&
-                                        ((selectedNode is ParagraphNode &&
-                                                selectedNode.hasMetadataValue('blockType')) ||
-                                            (selectedNode is TextNode && selectedNode is! ParagraphNode))
+                                            selectedNode is! ParagraphNode))
                                     ? _convertToParagraph
                                     : null,
                                 icon: const Icon(Icons.wrap_text),
                               ),
                               IconButton(
                                 onPressed: isSingleNodeSelected &&
-                                        (selectedNode is TextNode && selectedNode is! ListItemNode ||
-                                            (selectedNode is ListItemNode && selectedNode.type != ListItemType.ordered))
+                                    (selectedNode is TextNode &&
+                                        selectedNode is! ListItemNode ||
+                                        (selectedNode is ListItemNode &&
+                                            selectedNode.type !=
+                                                ListItemType.ordered))
                                     ? _convertToOrderedListItem
                                     : null,
                                 icon: const Icon(Icons.looks_one_rounded),
                               ),
                               IconButton(
                                 onPressed: isSingleNodeSelected &&
-                                        (selectedNode is TextNode && selectedNode is! ListItemNode ||
-                                            (selectedNode is ListItemNode &&
-                                                selectedNode.type != ListItemType.unordered))
+                                    (selectedNode is TextNode &&
+                                        selectedNode is! ListItemNode ||
+                                        (selectedNode is ListItemNode &&
+                                            selectedNode.type !=
+                                                ListItemType.unordered))
                                     ? _convertToUnorderedListItem
                                     : null,
                                 icon: const Icon(Icons.list),
                               ),
+                              // IconButton(
+                              //   onPressed: isSingleNodeSelected &&
+                              //           selectedNode is TextNode &&
+                              //           (selectedNode is! ParagraphNode ||
+                              //               selectedNode.getMetadataValue('blockType') != blockquoteAttribution)
+                              //       ? _convertToBlockquote
+                              //       : null,
+                              //   icon: const Icon(Icons.format_quote),
+                              // ),
+                              // IconButton(
+                              //   onPressed: isSingleNodeSelected &&
+                              //           selectedNode is ParagraphNode &&
+                              //           selectedNode.text.text.isEmpty
+                              //       ? _convertToHr
+                              //       : null,
+                              //   icon: const Icon(Icons.horizontal_rule),
+                              // ),
                               IconButton(
-                                onPressed: isSingleNodeSelected &&
-                                        selectedNode is TextNode &&
-                                        (selectedNode is! ParagraphNode ||
-                                            selectedNode.getMetadataValue('blockType') != blockquoteAttribution)
-                                    ? _convertToBlockquote
+                                onPressed: isSingleNodeSelected
+                                    ? () {
+                                        commonOps.insertPlainText('#');
+                                      }
                                     : null,
-                                icon: const Icon(Icons.format_quote),
-                              ),
-                              IconButton(
-                                onPressed: isSingleNodeSelected &&
-                                        selectedNode is ParagraphNode &&
-                                        selectedNode.text.text.isEmpty
-                                    ? _convertToHr
-                                    : null,
-                                icon: const Icon(Icons.horizontal_rule),
+                                icon: const Icon(Icons.numbers_rounded),
                               ),
                             ],
                           );
