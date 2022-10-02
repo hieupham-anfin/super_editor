@@ -15,7 +15,7 @@ class MagnifierAndToolbarController with ChangeNotifier {
   final LayerLink _magnifierFocalPointLink;
 
   /// Whether the magnifier should be displayed.
-  bool get shouldDisplayMagnifier => _isMagnifierVisible;
+  bool get shouldDisplayMagnifier => false;
   bool _isMagnifierVisible = false;
 
   /// Shows the magnify, and hides the toolbar.
