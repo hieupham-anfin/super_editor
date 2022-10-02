@@ -871,6 +871,13 @@ class SoftwareKeyboardHandler {
     editorImeLog.fine('Old text: "${delta.oldText}"');
 
     if (delta.textInserted == "\n") {
+      // Prevents a newline with the hint node
+      final nodes = editor.document.nodes;
+      if (nodes.length == 1) {
+        final first = nodes.first;
+        if (first is ParagraphNode && first.text.text.isEmpty) return;
+      }
+
       // On iOS, newlines are reported here and also to performAction().
       // On Android and web, newlines are only reported here. So, on Android and web,
       // we forward the newline action to performAction.
