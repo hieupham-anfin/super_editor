@@ -223,7 +223,13 @@ class _DocumentImeInteractorState extends State<DocumentImeInteractor> implement
   TextEditingValue _currentTextEditingValue = const TextEditingValue();
   DocumentImeSerializer? _currentImeSerialization;
   TextEditingValue? _lastTextEditingValueSentToOs;
-  set currentTextEditingValue(TextEditingValue newValue) {
+  set currentTextEditingValue(TextEditingValue next) {
+    TextEditingValue newValue = next;
+    if (!next.isComposingRangeValid) {
+      final end = min(max(0, next.composing.end), next.text.length);
+      final start = max(0, min(next.composing.start, end));
+      newValue = next.copyWith(composing: TextRange(start: start, end: end));
+    }
     _currentTextEditingValue = newValue;
     if (newValue != _lastTextEditingValueSentToOs && !_isApplyingDeltas) {
       editorImeLog.info("Sending new text editing value to OS: $_currentTextEditingValue");
@@ -260,8 +266,8 @@ class _DocumentImeInteractorState extends State<DocumentImeInteractor> implement
         // The updated IME value doesn't have a prepended placeholder, adjust
         // the composing region bounds.
         composingRegion = TextRange(
-          start: composingRegion.start - 2,
-          end: composingRegion.end - 2,
+          start: max(0, composingRegion.start - 2),
+          end: max(0, composingRegion.end - 2),
         );
       }
 
@@ -284,6 +290,7 @@ class _DocumentImeInteractorState extends State<DocumentImeInteractor> implement
     for (final delta in textEditingDeltas) {
       editorImeLog.info("$delta");
     }
+    if (textEditingDeltas.isEmpty) return;
 
     final imeValueBeforeChange = currentTextEditingValue;
     editorImeLog.fine("IME value before applying deltas: $imeValueBeforeChange");
