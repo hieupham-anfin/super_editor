@@ -447,12 +447,16 @@ class TextComponentState extends State<TextComponent> with DocumentComponent imp
 
   late bool shouldIgnorePointer;
 
+  late void Function(String) onSpanTap;
+
   @override
   void didChangeDependencies() {
-    shouldIgnorePointer = context
-            .dependOnInheritedWidgetOfExactType<SuperIgnorePointer>()
-            ?.shouldIgnorePointer ??
-        true;
+    final superIgnorePointer =
+        context.dependOnInheritedWidgetOfExactType<SuperIgnorePointer>();
+
+    shouldIgnorePointer = superIgnorePointer?.shouldIgnorePointer ?? true;
+    onSpanTap = superIgnorePointer?.onSpanTap ?? (_) {};
+
     super.didChangeDependencies();
   }
 
@@ -804,7 +808,10 @@ class TextComponentState extends State<TextComponent> with DocumentComponent imp
       ignoring: shouldIgnorePointer,
       child: SuperTextWithSelection.single(
         key: _textKey,
-        richText: widget.text.computeTextSpan(_textStyleWithBlockType),
+        richText: widget.text.computeTextSpan(
+          _textStyleWithBlockType,
+          onSpanTap: onSpanTap,
+        ),
         textAlign: widget.textAlign ?? TextAlign.left,
         textDirection: widget.textDirection ?? TextDirection.ltr,
         userSelection: UserSelection(

@@ -22,7 +22,10 @@ extension ComputeTextSpan on AttributedText {
   ///
   /// The given [styleBuilder] interprets the meaning of every
   /// attribution and constructs [TextStyle]s accordingly.
-  TextSpan computeTextSpan(AttributionStyleBuilder styleBuilder) {
+  TextSpan computeTextSpan(
+    AttributionStyleBuilder styleBuilder, {
+    void Function(String)? onSpanTap,
+  }) {
     attributionsLog.fine('text length: ${text.length}');
     attributionsLog.fine('attributions used to compute spans:');
     attributionsLog.fine(spans.toString());
@@ -53,9 +56,7 @@ extension ComputeTextSpan on AttributedText {
         GestureRecognizer? recognizer;
         if (att != null && att is HashtagAttribution) {
           recognizer = TapGestureRecognizer()
-            ..onTap = () {
-              print(att.hashtag);
-            };
+            ..onTap = () => onSpanTap?.call(att.hashtag);
         }
 
         return TextSpan(

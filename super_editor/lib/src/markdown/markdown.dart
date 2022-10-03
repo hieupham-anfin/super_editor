@@ -23,6 +23,9 @@ MutableDocument deserializeMarkdownToDocument(
         _ParagraphWithAlignmentSyntax(),
       _EmptyLinePreservingParagraphSyntax(),
     ],
+    inlineSyntaxes: [
+      if (syntax == MarkdownSyntax.superEditor) UnderlineSyntax(),
+    ],
   );
   final blockParser = md.BlockParser(markdownLines, markdownDoc);
 
@@ -184,6 +187,7 @@ class _MarkdownToDocument implements md.NodeVisitor {
       case 'h6':
         _addHeader(element, level: 6);
         break;
+      case 'code':
       case 'p':
         final inlineVisitor = _parseInline(element);
 
@@ -203,9 +207,6 @@ class _MarkdownToDocument implements md.NodeVisitor {
         // Skip child elements within a blockquote so that we don't
         // add another node for the paragraph that comprises the blockquote
         return false;
-      case 'code':
-        _addCodeBlock(element);
-        break;
       case 'ul':
       // A list just started. Push that list type on top of the list type stack.
         _listItemTypeStack.add(ListItemType.unordered);
