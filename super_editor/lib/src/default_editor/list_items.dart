@@ -285,7 +285,7 @@ class UnorderedListItemComponent extends StatelessWidget {
     final textStyle = styleBuilder({});
     final indentSpace = indentCalculator(textStyle, indent);
     final lineHeight = textStyle.fontSize! * (textStyle.height ?? 1.25);
-    const manualVerticalAdjustment = 3.0;
+    const manualVerticalAdjustment = 0.0;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -325,7 +325,7 @@ Widget _defaultUnorderedListItemDotBuilder(BuildContext context, UnorderedListIt
     child: Container(
       width: 4,
       height: 4,
-      margin: const EdgeInsets.only(right: 10),
+      margin: const EdgeInsets.only(right: 10, top: 2),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: component.styleBuilder({}).color,
@@ -408,7 +408,7 @@ class OrderedListItemComponent extends StatelessWidget {
 typedef OrderedListItemNumeralBuilder = Widget Function(BuildContext, OrderedListItemComponent);
 
 double _defaultIndentCalculator(TextStyle textStyle, int indent) {
-  return (textStyle.fontSize! * 0.60) * 4 * (indent + 1);
+  return 28;
 }
 
 Widget _defaultOrderedListItemNumeralBuilder(BuildContext context, OrderedListItemComponent component) {
