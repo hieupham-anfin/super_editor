@@ -41,7 +41,8 @@ extension ComputeTextSpan on AttributedText {
     final matches = hashTagRegExp.allMatches(text);
     for (final match in matches) {
       spans.addAttribution(
-        newAttribution: HashtagAttribution(hashtag: match.group(0) ?? ''),
+        newAttribution:
+            HashtagAttribution(hashtag: match.group(0)?.trim() ?? ''),
         start: match.start,
         end: match.end - 1,
       );
