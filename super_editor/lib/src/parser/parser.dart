@@ -39,7 +39,7 @@ extension DocumentParser on MutableDocument {
     return list;
   }
 
-  static MutableDocument fromJson(List<Map<String, dynamic>> list) {
+  static List<DocumentNode> fromJson(List<Map<String, dynamic>> list) {
     final nodes = <DocumentNode>[];
 
     list.forEach((l) {
@@ -73,6 +73,6 @@ extension DocumentParser on MutableDocument {
       }
     });
 
-    return MutableDocument(nodes: nodes);
+    return nodes;
   }
 }

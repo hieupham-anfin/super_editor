@@ -40,10 +40,10 @@ void main() {
   test('', () async {
     final list = _testDoc.toJson();
     print(list);
-    final doc = DocumentParser.fromJson(list);
+    final nodes = DocumentParser.fromJson(list);
     print('@@@@@');
-    print(doc.nodes[0] is ParagraphNode);
-    print(doc.nodes[1] is ListItemNode);
-    print(doc.nodes[2] is ListItemNode);
+    print(nodes[0] is ParagraphNode);
+    print(nodes[1] is ListItemNode);
+    print(nodes[2] is ListItemNode);
   });
 }
