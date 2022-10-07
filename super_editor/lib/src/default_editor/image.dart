@@ -17,7 +17,7 @@ class ImageNode extends BlockNode with ChangeNotifier {
         _altText = altText {
     this.metadata = metadata;
 
-    putMetadataValue("blockType", const NamedAttribution("image"));
+    putMetadataValue("blockType", const Attribution("image"));
   }
 
   @override

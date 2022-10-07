@@ -464,7 +464,6 @@ class SuperEditorState extends State<SuperEditor> {
       // TODO: attribution expansion policy should probably be configurable
       final allStyles = node.text
           .getAllAttributionsAt(textPosition.offset + 1)
-          .where((attribution) => attribution is! LinkAttribution)
           .toSet();
       _composer.preferences.addStyles(allStyles);
     } else {
@@ -473,7 +472,6 @@ class SuperEditorState extends State<SuperEditor> {
       // TODO: attribution expansion policy should probably be configurable
       final allStyles = node.text
           .getAllAttributionsAt(textPosition.offset - 1)
-          .where((attribution) => attribution is! LinkAttribution)
           .toSet();
       _composer.preferences.addStyles(allStyles);
     }
@@ -871,7 +869,7 @@ TextStyle defaultStyleBuilder(Set<Attribution> attributions) {
   TextStyle newStyle = const TextStyle();
 
   for (final attribution in attributions) {
-    if (attribution is HashtagAttribution) {
+    if (attribution.id == hashtagAttKey) {
       return TextStyle(
         fontWeight: FontWeight.bold,
         color: Colors.blueAccent,
@@ -895,11 +893,6 @@ TextStyle defaultStyleBuilder(Set<Attribution> attributions) {
         decoration: newStyle.decoration == null
             ? TextDecoration.lineThrough
             : TextDecoration.combine([TextDecoration.lineThrough, newStyle.decoration!]),
-      );
-    } else if (attribution is LinkAttribution) {
-      newStyle = newStyle.copyWith(
-        color: Colors.lightBlue,
-        decoration: TextDecoration.underline,
       );
     }
   }

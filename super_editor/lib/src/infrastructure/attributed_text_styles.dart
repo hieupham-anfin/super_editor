@@ -36,13 +36,13 @@ extension ComputeTextSpan on AttributedText {
       return TextSpan(text: '', style: styleBuilder({}));
     }
 
-    spans.markers.removeWhere((m) => m.attribution is HashtagAttribution);
+    spans.markers.removeWhere((m) => m.attribution.id == hashtagAttKey);
 
     final matches = hashTagRegExp.allMatches(text);
     for (final match in matches) {
       spans.addAttribution(
-        newAttribution:
-            HashtagAttribution(hashtag: match.group(0)?.trim() ?? ''),
+        newAttribution: Attribution(
+            hashtagAttKey, {hashtagAttKey: match.group(0)?.trim() ?? ''}),
         start: match.start,
         end: match.end - 1,
       );
@@ -52,12 +52,12 @@ extension ComputeTextSpan on AttributedText {
     final textSpans = collapsedSpans.map(
       (attributedSpan) {
         final att = attributedSpan.attributions
-            .firstWhereOrNull((att) => att is HashtagAttribution);
+            .firstWhereOrNull((att) => att.id == hashtagAttKey);
 
         GestureRecognizer? recognizer;
-        if (att != null && att is HashtagAttribution) {
+        if (att != null && att.id == hashtagAttKey) {
           recognizer = TapGestureRecognizer()
-            ..onTap = () => onSpanTap?.call(att.hashtag);
+            ..onTap = () => onSpanTap?.call(att.data[hashtagAttKey]);
         }
 
         return TextSpan(

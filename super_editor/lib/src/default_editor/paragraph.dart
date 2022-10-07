@@ -27,7 +27,7 @@ class ParagraphNode extends TextNode {
           metadata: metadata,
         ) {
     if (getMetadataValue("blockType") == null) {
-      putMetadataValue("blockType", const NamedAttribution("paragraph"));
+      putMetadataValue("blockType", const Attribution("paragraph"));
     }
   }
 }

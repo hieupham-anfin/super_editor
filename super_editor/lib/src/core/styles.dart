@@ -142,7 +142,7 @@ class BlockSelector {
   /// Returns `true` if this selector matches the block for the given [node], or
   /// `false`, otherwise.
   bool matches(Document document, DocumentNode node) {
-    if (_blockType != null && (node.getMetadataValue("blockType") as NamedAttribution?)?.name != _blockType) {
+    if (_blockType != null && (node.getMetadataValue("blockType") as Attribution?)?.name != _blockType) {
       return false;
     }
 
@@ -153,7 +153,7 @@ class BlockSelector {
     if (_precedingBlockType != null) {
       final nodeBefore = document.getNodeBefore(node);
       if (nodeBefore == null ||
-          (nodeBefore.getMetadataValue("blockType") as NamedAttribution?)?.name != _precedingBlockType) {
+          (nodeBefore.getMetadataValue("blockType") as Attribution?)?.name != _precedingBlockType) {
         return false;
       }
     }
@@ -161,7 +161,7 @@ class BlockSelector {
     if (_followingBlockType != null) {
       final nodeAfter = document.getNodeAfter(node);
       if (nodeAfter == null ||
-          (nodeAfter.getMetadataValue("blockType") as NamedAttribution?)?.name != _followingBlockType) {
+          (nodeAfter.getMetadataValue("blockType") as Attribution?)?.name != _followingBlockType) {
         return false;
       }
     }

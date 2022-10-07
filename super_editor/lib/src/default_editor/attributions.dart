@@ -1,97 +1,39 @@
 import 'package:attributed_text/attributed_text.dart';
 
 /// Header 1 style attribution.
-const header1Attribution = NamedAttribution('header1');
+const header1Attribution = Attribution('header1');
 
 /// Header 2 style attribution.
-const header2Attribution = NamedAttribution('header2');
+const header2Attribution = Attribution('header2');
 
 /// Header 3 style attribution.
-const header3Attribution = NamedAttribution('header3');
+const header3Attribution = Attribution('header3');
 
 /// Header 4 style attribution.
-const header4Attribution = NamedAttribution('header4');
+const header4Attribution = Attribution('header4');
 
 /// Header 5 style attribution.
-const header5Attribution = NamedAttribution('header5');
+const header5Attribution = Attribution('header5');
 
 /// Header 6 style attribution.
-const header6Attribution = NamedAttribution('header6');
+const header6Attribution = Attribution('header6');
 
 /// Blockquote attribution
-const blockquoteAttribution = NamedAttribution('blockquote');
+const blockquoteAttribution = Attribution('blockquote');
 
 /// Bold style attribution.
-const boldAttribution = NamedAttribution('bold');
+const boldAttribution = Attribution('bold');
 
 /// Italics style attribution.
-const italicsAttribution = NamedAttribution('italics');
+const italicsAttribution = Attribution('italics');
 
 /// Underline style attribution.
-const underlineAttribution = NamedAttribution('underline');
+const underlineAttribution = Attribution('underline');
 
 /// Strikethrough style attribution.
-const strikethroughAttribution = NamedAttribution('strikethrough');
+const strikethroughAttribution = Attribution('strikethrough');
 
 /// Code style attribution.
-const codeAttribution = NamedAttribution('code');
+const codeAttribution = Attribution('code');
 
-/// Attribution to be used within [AttributedText] to
-/// represent a link.
-///
-/// Every [LinkAttribution] is considered equivalent so
-/// that [AttributedText] prevents multiple [LinkAttribution]s
-/// from overlapping.
-///
-/// If [LinkAttribution] does not meet your development needs,
-/// a different class or value can be used to implement links
-/// within [AttributedText]. This class doesn't have a special
-/// relationship with [AttributedText].
-class LinkAttribution implements Attribution {
-  LinkAttribution({
-    required this.url,
-  });
-
-  @override
-  String get id => 'link';
-
-  final Uri url;
-
-  @override
-  bool canMergeWith(Attribution other) {
-    return this == other;
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) || other is LinkAttribution && runtimeType == other.runtimeType && url == other.url;
-
-  @override
-  int get hashCode => url.hashCode;
-
-  @override
-  String toString() {
-    return '[LinkAttribution]: $url';
-  }
-}
-
-class HashtagAttribution implements Attribution {
-  HashtagAttribution({required this.hashtag});
-
-  @override
-  String get id => 'link';
-
-  final String hashtag;
-
-  @override
-  bool canMergeWith(Attribution other) {
-    return this == other;
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is HashtagAttribution &&
-          runtimeType == other.runtimeType &&
-          hashtag == other.hashtag;
-}
+const hashtagAttKey = 'hashtag';

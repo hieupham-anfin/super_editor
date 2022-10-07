@@ -12,7 +12,7 @@ class HorizontalRuleNode extends BlockNode with ChangeNotifier {
   HorizontalRuleNode({
     required this.id,
   }) {
-    putMetadataValue("blockType", const NamedAttribution("horizontalRule"));
+    putMetadataValue("blockType", const Attribution("horizontalRule"));
   }
 
   @override

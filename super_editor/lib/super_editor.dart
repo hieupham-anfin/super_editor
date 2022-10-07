@@ -59,7 +59,6 @@ export 'src/infrastructure/strings.dart';
 export 'src/infrastructure/super_textfield/super_textfield.dart';
 
 export 'src/infrastructure/super_ignore_pointer.dart';
-export 'src/markdown/markdown.dart';
 
 // Super Reader
 export 'src/super_reader/read_only_document_android_touch_interactor.dart';

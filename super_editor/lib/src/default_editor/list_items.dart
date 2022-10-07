@@ -28,7 +28,7 @@ class ListItemNode extends TextNode {
           text: text,
           metadata: metadata,
         ) {
-    putMetadataValue("blockType", const NamedAttribution("listItem"));
+    putMetadataValue("blockType", const Attribution("listItem"));
   }
 
   ListItemNode.unordered({
@@ -43,7 +43,7 @@ class ListItemNode extends TextNode {
           text: text,
           metadata: metadata,
         ) {
-    putMetadataValue("blockType", const NamedAttribution("listItem"));
+    putMetadataValue("blockType", const Attribution("listItem"));
   }
 
   ListItemNode({
