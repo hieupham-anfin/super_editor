@@ -26,22 +26,22 @@ class AndroidTextEditingFloatingToolbar extends StatelessWidget {
           if (onCutPressed != null)
             _buildButton(
               onPressed: onCutPressed!,
-              title: 'Cut',
+              title: 'Cắt',
             ),
           if (onCopyPressed != null)
             _buildButton(
               onPressed: onCopyPressed!,
-              title: 'Copy',
+              title: 'Sao chép',
             ),
           if (onPastePressed != null)
             _buildButton(
               onPressed: onPastePressed!,
-              title: 'Paste',
+              title: 'Dán',
             ),
           if (onSelectAllPressed != null)
             _buildButton(
               onPressed: onSelectAllPressed!,
-              title: 'Select All',
+              title: 'Chọn tất cả',
             ),
         ],
       ),
