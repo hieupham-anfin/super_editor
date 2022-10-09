@@ -424,7 +424,7 @@ class _DocumentImeInteractorState extends State<DocumentImeInteractor> implement
 }
 
 class DocumentImeSerializer {
-  static const _leadingCharacter = '. ';
+  static const _leadingCharacter = '¬¬';
 
   DocumentImeSerializer(this._doc, this._selection) {
     _serialize();
@@ -505,11 +505,13 @@ class DocumentImeSerializer {
     // another node above the selected node. Without the arbitrary character,
     // the IME would assume that there's no content before the current node and
     // therefore it wouldn't report the backspace button.
-    final selectedNode = _doc.getNode(_selection.extent)!;
-    final selectedNodeIndex = _doc.getNodeIndex(selectedNode);
-    return selectedNodeIndex > 0 &&
-        _selection.isCollapsed &&
-        _selection.extent.nodePosition == selectedNode.beginningPosition;
+    // final selectedNode = _doc.getNode(_selection.extent)!;
+    // final selectedNodeIndex = _doc.getNodeIndex(selectedNode);
+    // return selectedNodeIndex > 0 &&
+    //     _selection.isCollapsed &&
+    //     _selection.extent.nodePosition == selectedNode.beginningPosition;
+
+    return false;
   }
 
   bool get didPrependPlaceholder => _prependedPlaceholder.isNotEmpty;
