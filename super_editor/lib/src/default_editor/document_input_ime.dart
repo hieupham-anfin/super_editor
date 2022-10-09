@@ -505,13 +505,11 @@ class DocumentImeSerializer {
     // another node above the selected node. Without the arbitrary character,
     // the IME would assume that there's no content before the current node and
     // therefore it wouldn't report the backspace button.
-    // final selectedNode = _doc.getNode(_selection.extent)!;
-    // final selectedNodeIndex = _doc.getNodeIndex(selectedNode);
-    // return selectedNodeIndex > 0 &&
-    //     _selection.isCollapsed &&
-    //     _selection.extent.nodePosition == selectedNode.beginningPosition;
-
-    return false;
+    final selectedNode = _doc.getNode(_selection.extent)!;
+    final selectedNodeIndex = _doc.getNodeIndex(selectedNode);
+    return selectedNodeIndex > 0 &&
+        _selection.isCollapsed &&
+        _selection.extent.nodePosition == selectedNode.beginningPosition;
   }
 
   bool get didPrependPlaceholder => _prependedPlaceholder.isNotEmpty;
@@ -872,9 +870,9 @@ class SoftwareKeyboardHandler {
     editorImeLog.fine("Composing: ${delta.composing}");
     editorImeLog.fine('Old text: "${delta.oldText}"');
 
+    final nodes = editor.document.nodes;
     if (delta.textInserted == "\n") {
       // Prevents a newline with the hint node
-      final nodes = editor.document.nodes;
       if (nodes.length == 1) {
         final first = nodes.first;
         if (first is ParagraphNode && first.text.text.isEmpty) return;
@@ -902,7 +900,13 @@ class SoftwareKeyboardHandler {
         "Inserting text: ${delta.textInserted}, insertion offset: ${delta.insertionOffset}, ime selection: ${delta.selection}");
 
     insert(
-      TextPosition(offset: delta.insertionOffset, affinity: delta.selection.affinity),
+      TextPosition(
+        offset: nodes.length > 1 && delta.oldText.isEmpty &&
+            delta.textInserted.isNotEmpty
+            ? 2
+            : delta.insertionOffset,
+        affinity: delta.selection.affinity,
+      ),
       delta.textInserted,
     );
   }
