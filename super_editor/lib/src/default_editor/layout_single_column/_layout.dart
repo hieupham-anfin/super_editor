@@ -136,23 +136,23 @@ class _SingleColumnDocumentLayoutState extends State<SingleColumnDocumentLayout>
     );
     editorLayoutLog.info('Getting document position near offset: $documentOffset');
 
-    if (_isAboveStartOfContent(documentOffset)) {
-      // The given offset is above the start of the content.
-      // Return the position at the start of the first node.
-      final firstPosition = _findFirstPosition();
-      if (firstPosition != null) {
-        return firstPosition;
-      }
-    }
+    // if (_isAboveStartOfContent(documentOffset)) {
+    //   // The given offset is above the start of the content.
+    //   // Return the position at the start of the first node.
+    //   final firstPosition = _findFirstPosition();
+    //   if (firstPosition != null) {
+    //     return firstPosition;
+    //   }
+    // }
 
-    if (_isBeyondDocumentEnd(documentOffset)) {
-      // The given offset is beyond the end of the content.
-      // Return the position at the end of the last node.
-      final lastPosition = _findLastPosition();
-      if (lastPosition != null) {
-        return lastPosition;
-      }
-    }
+    // if (_isBeyondDocumentEnd(documentOffset)) {
+    //   // The given offset is beyond the end of the content.
+    //   // Return the position at the end of the last node.
+    //   final lastPosition = _findLastPosition();
+    //   if (lastPosition != null) {
+    //     return lastPosition;
+    //   }
+    // }
 
     final componentKey = _findComponentClosestToOffset(documentOffset);
     if (componentKey == null || componentKey.currentContext == null) {
